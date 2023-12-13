@@ -5,6 +5,12 @@ import 'package:go_router/go_router.dart';
 import 'app.dart';
 import 'nav_destinations.dart';
 
+const _bodyKey = Key('Body');
+const _fabKey = Key('FAB');
+const _bottomNavigationKey = Key('BottomNavigation');
+const _primaryNavigationKey = Key('PrimaryNavigation');
+const _primaryNavigationExtendedKey = Key('PrimaryNavigationExpanded');
+
 /// このWidgetでは、`Primary Navigation`,`BottomNavigation`の管理のみとする
 /// FABはレイアウトの都合上含めるが、`Body`,`SecondaryBody`は対象外
 class AppNavigationShell extends StatelessWidget {
@@ -31,14 +37,14 @@ class AppNavigationShell extends StatelessWidget {
         )
         .toList();
 
-    // FABやメニューを追加する場合は`AdaptiveLayout`を利用する
-    // `AdaptiveScaffold`の内部実装と合わせるため、`Scaffold`でラッピング
+// FABやメニューを追加する場合は`AdaptiveLayout`を利用する
+// `AdaptiveScaffold`の内部実装と合わせるため、`Scaffold`でラッピング
     return Scaffold(
       body: AdaptiveLayout(
         body: SlotLayout(
           config: <Breakpoint, SlotLayoutConfig>{
             Breakpoints.small: SlotLayout.from(
-              key: const Key('Body'),
+              key: _bodyKey,
               // `_BranchSwitcher`で切り替え時のアニメーションを制御
               builder: (_) => Scaffold(
                 appBar: AppBar(title: const Text(appName)),
@@ -47,14 +53,14 @@ class AppNavigationShell extends StatelessWidget {
                   children: children,
                 ),
                 floatingActionButton: FloatingActionButton(
-                  key: const Key('FAB'),
+                  key: _fabKey,
                   onPressed: () {},
                   child: const Icon(Icons.add),
                 ),
               ),
             ),
             Breakpoints.mediumAndUp: SlotLayout.from(
-              key: const Key('Body'),
+              key: _bodyKey,
               builder: (_) => Scaffold(
                 appBar: AppBar(title: const Text(appName)),
                 body: _BranchSwitcher(
@@ -70,7 +76,7 @@ class AppNavigationShell extends StatelessWidget {
           config: <Breakpoint, SlotLayoutConfig>{
             // 画面サイズがMediumの場合
             Breakpoints.medium: SlotLayout.from(
-              key: const Key('PrimaryNavigation'),
+              key: _primaryNavigationKey,
               builder: (_) => AdaptiveScaffold.standardNavigationRail(
                 // NavigationBarとNavigationRailで定義が異なるので変換を行う
                 destinations: _toRailDestinations(destinations),
@@ -80,7 +86,7 @@ class AppNavigationShell extends StatelessWidget {
                 leading: Padding(
                   padding: const EdgeInsets.only(bottom: 56),
                   child: FloatingActionButton(
-                    key: const Key('FAB'),
+                    key: _fabKey,
                     onPressed: () {},
                     child: const Icon(Icons.add),
                   ),
@@ -89,7 +95,7 @@ class AppNavigationShell extends StatelessWidget {
             ),
             // 画面サイズがLarge(Expanded)の場合
             Breakpoints.large: SlotLayout.from(
-              key: const Key('PrimaryNavigationExpanded'),
+              key: _primaryNavigationExtendedKey,
               builder: (_) => AdaptiveScaffold.standardNavigationRail(
                 extended: true,
                 destinations: _toRailDestinations(destinations),
@@ -101,7 +107,7 @@ class AppNavigationShell extends StatelessWidget {
                     padding:
                         const EdgeInsets.only(bottom: 56, left: 12, right: 12),
                     child: FloatingActionButton.extended(
-                      key: const Key('FAB'),
+                      key: _fabKey,
                       onPressed: () {},
                       icon: const Icon(Icons.add),
                       label: const Text('Add'),
@@ -117,7 +123,7 @@ class AppNavigationShell extends StatelessWidget {
           config: <Breakpoint, SlotLayoutConfig>{
             // 画面サイズがSmall(Compact)以上の場合
             Breakpoints.smallAndUp: SlotLayout.from(
-              key: const Key('BottomNavigation'),
+              key: _bottomNavigationKey,
               inAnimation: AdaptiveScaffold.bottomToTop,
               outAnimation: AdaptiveScaffold.topToBottom,
               builder: (_) => AdaptiveScaffold.standardBottomNavigationBar(

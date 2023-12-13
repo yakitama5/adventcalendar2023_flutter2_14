@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 
+const _firstPaneKey = Key('FirstPane');
+const _secondPaneKey = Key('SecondPane');
+
 /// 画面サイズに応じてペインを分割表示する`Scaffold`
 class AdaptiveSplitPaneScaffold extends StatelessWidget {
   const AdaptiveSplitPaneScaffold({
@@ -21,7 +24,7 @@ class AdaptiveSplitPaneScaffold extends StatelessWidget {
         config: <Breakpoint, SlotLayoutConfig>{
           // 画面サイズがSmall以上の場合
           Breakpoints.smallAndUp: SlotLayout.from(
-            key: const Key('Body'),
+            key: _firstPaneKey,
             // 一覧画面などのデフォルト表示を切り替えるため、どちらを表示するべきか選択させる
             builder: (_) => secondaryBody != null && showSmallSecondary
                 ? secondaryBody!
@@ -29,7 +32,7 @@ class AdaptiveSplitPaneScaffold extends StatelessWidget {
           ),
           // 画面サイズがLarge(Expanded)の場合
           Breakpoints.large: SlotLayout.from(
-            key: const Key('Body'),
+            key: _firstPaneKey,
             builder: (_) => body,
           ),
         },
@@ -38,10 +41,10 @@ class AdaptiveSplitPaneScaffold extends StatelessWidget {
       secondaryBody: SlotLayout(
         config: <Breakpoint, SlotLayoutConfig>{
           Breakpoints.smallAndUp: SlotLayout.from(
-            key: const Key('SecondaryBody'),
+            key: _secondPaneKey,
           ),
           Breakpoints.large: SlotLayout.from(
-            key: const Key('SecondaryBody'),
+            key: _secondPaneKey,
             builder: secondaryBody != null
                 ? (_) => secondaryBody!
                 : AdaptiveScaffold.emptyBuilder,
