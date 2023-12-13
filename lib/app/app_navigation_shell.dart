@@ -164,19 +164,9 @@ class AppNavigationShell extends StatelessWidget {
   ) =>
       destinations
           .map(
-            (e) => NavigationRailDestination(
-              icon: Tooltip(
-                // `Navigation rail`がTooltip非対応
-                // Notes: https://github.com/flutter/flutter/issues/113103
-                message: e.tooltip,
-                child: e.icon,
-              ),
-              selectedIcon: Tooltip(
-                message: e.tooltip,
-                child: e.selectedIcon,
-              ),
-              label: Text(e.label),
-            ),
+            // `Navigation rail`がTooltip非対応
+            // Notes: https://github.com/flutter/flutter/issues/113103
+            AdaptiveScaffold.toRailDestination,
           )
           .toList();
 }
